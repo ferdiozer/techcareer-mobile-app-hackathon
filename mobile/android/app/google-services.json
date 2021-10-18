@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "950232549379",
+    "project_id": "piyvoicechat",
+    "storage_bucket": "piyvoicechat.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:950232549379:android:60f1005d63803c57542636",
+        "android_client_info": {
+          "package_name": "com.piyanos.piyvoicechat"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "950232549379-44llt5vb45idd1rcrup90bq221krh4jh.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyApecTelRJUuWRk_vTsUZyWNnoZLp7k9LY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "950232549379-44llt5vb45idd1rcrup90bq221krh4jh.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
