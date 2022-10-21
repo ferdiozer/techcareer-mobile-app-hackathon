@@ -20,16 +20,12 @@ import { connect } from 'react-redux';
 
 import _ from 'lodash'
 
-import {
-    LoginButton,
-    AccessToken,
-    GraphRequest,
-    GraphRequestManager,
-    LoginManager
-} from 'react-native-fbsdk';
+
 import { useTheme } from 'react-native-paper';
 
 import { colors as MYcolors } from '../constants';
+import i18n from '../i18n';
+
 
 const color1 = MYcolors.primary
 
@@ -93,20 +89,6 @@ const SignInScreen = (props) => {
         });
     }
 
-    const handleValidUser = (val) => {
-        if (val.trim().length >= 4) {
-            setData({
-                ...data,
-                isValidUser: true
-            });
-        } else {
-            setData({
-                ...data,
-                isValidUser: false
-            });
-        }
-    }
-
     const onSubmit = () => {
         if (data.formtype === "login") {
             loginHandle()
@@ -117,7 +99,6 @@ const SignInScreen = (props) => {
 
     const onForgot = async () => {
         const email = data.username
-        console.log("şifre sıfırlama on click:onForgot", email)
         if (!email) {
             return
         }
@@ -125,9 +106,9 @@ const SignInScreen = (props) => {
         const { success, error } = props
 
         if (success) {
-            Alert.alert('Başarılı', "Şifre sıfırlama linki mail adresine gönderildi.", [
+            Alert.alert(i18n.t('message.success'), i18n.t('message.forgotSendded'), [
                 {
-                    text: 'Tamam', onPress: () => {
+                    text: i18n.t('okay'), onPress: () => {
                         setData({
                             ...data,
                             formtype: 'login',
@@ -142,47 +123,23 @@ const SignInScreen = (props) => {
     const loginHandle = async () => {
         const userName = data.username;
         const password = data.password;
-        console.log("loginHandle1")
         if (data.username.length == 0 || data.password.length == 0) {
-            Alert.alert('Yanlış giriş!', 'Kullanıcı adı veya şifre alanı boş olamaz.', [
-                { text: 'Tamam' }
+            Alert.alert(i18n.t('message.wrongEnter'), i18n.t('message.emptyUsernameOrPass'), [
+                { text: i18n.t('message.okay') }
             ]);
             return;
         }
         props.doSignIn({ email: userName.trim(), password })
     }
 
-    const loginFacebook = async (response) => {
-        const postData = {
-            name: _.get(response, "name"),
-            email: _.get(response, "email"),
-            avatar: _.get(response, "picture.data.url"),
-            FBid: _.get(response, "id", ""),
-            FBaccessToken: _.get(data, "facebookData.accessToken"),
-            FBuserID: _.get(response, "id"),
-            fbData: _.get(data, "facebookData")
-        }
-        props.doSignIn(postData)
-    }
-
-
-    //Create response callback.
-    const _responseInfoCallback = (error, result) => {
-        console.log("_responseInfoCallback", result)
-        if (error) {
-            console.log('Error fetching data: ', error);
-        } else {
-            loginFacebook(result)
-        }
-    }
-
-
 
     return (
         <View style={styles.container}>
             <StatusBar backgroundColor={color1} barStyle="light-content" />
             <View style={styles.header}>
-                <Text style={styles.text_header}>Merhaba!</Text>
+                <Text style={styles.text_header}>
+                    {i18n.t('message.hello')}
+                    </Text>
             </View>
             <Animatable.View
                 animation="fadeInUpBig"
@@ -192,7 +149,9 @@ const SignInScreen = (props) => {
             >
                 <Text style={[styles.text_footer, {
                     color: colors.text
-                }]}>Kullanıcı Adı</Text>
+                }]}>
+                    {i18n.t('username')}
+                </Text>
                 <View style={styles.action}>
                     <FontAwesome
                         name="user-o"
@@ -202,7 +161,7 @@ const SignInScreen = (props) => {
                     <TextInput
                         onSubmitEditing={() => { passwordTextInputRef?.current.focus(); }}
                         value={data.username}
-                        placeholder="Kullanıcı adın veya E-posta adresin"
+                        placeholder={i18n.t('usernameOrEmail')}
                         placeholderTextColor="#666666"
                         style={[styles.textInput, {
                             color: colors.text
@@ -225,7 +184,9 @@ const SignInScreen = (props) => {
                 </View>
                 {data.isValidUser ? null :
                     <Animatable.View animation="fadeInLeft" duration={500}>
-                        <Text style={styles.errorMsg}>Kullanıcı adı 3 karakterden uzun olmalıdır.</Text>
+                        <Text style={styles.errorMsg}>
+                            {i18n.t('message.usernameMore3')}
+                        </Text>
                     </Animatable.View>
                 }
 
@@ -237,7 +198,9 @@ const SignInScreen = (props) => {
                         <Text style={[styles.text_footer, {
                             color: colors.text,
                             marginTop: 35
-                        }]}>Şifre</Text>
+                        }]}>
+                            {i18n.t('password')}
+                        </Text>
                         <View style={styles.action}>
                             <Feather
                                 name="lock"
@@ -246,7 +209,7 @@ const SignInScreen = (props) => {
                             />
                             <TextInput
                                 value={data.password}
-                                placeholder="Şifreni gir"
+                                placeholder={i18n.t('message.enterPassword')}
                                 placeholderTextColor="#666666"
                                 secureTextEntry={data.secureTextEntry ? true : false}
                                 style={[styles.textInput, {
@@ -276,7 +239,9 @@ const SignInScreen = (props) => {
                         </View>
                         {data.isValidPassword ? null :
                             <Animatable.View animation="fadeInLeft" duration={500}>
-                                <Text style={styles.errorMsg}>Şifre alanı zorunlu</Text>
+                                <Text style={styles.errorMsg}>
+                                {i18n.t('message.requiredPassword')}
+                                </Text>
                             </Animatable.View>
                         }
                     </View>
@@ -287,16 +252,16 @@ const SignInScreen = (props) => {
                         {
                             data.formtype == "login"
                                 ?
-                                "Şifremi unttum"
+                                i18n.t('message.forgotPassword')
                                 :
-                                "Şifremi hatırlıyorum"
+                                i18n.t('message.iRememberPassword')
                         }
                     </Text>
                 </TouchableOpacity>
                 <View style={styles.button}>
                     <TouchableOpacity
                         style={styles.signIn}
-                        disabled={loading}
+                       // disabled={loading}
                         onPress={() => onSubmit()}
                     >
                         <LinearGradient
@@ -310,11 +275,10 @@ const SignInScreen = (props) => {
                                 {
                                     data.formtype == "login"
                                         ?
-                                        "Giriş Yap"
+                                        i18n.t('login')
                                         :
-                                        "Şifreyi Sıfırla"
+                                        i18n.t('resetPassword')  
                                 }
-
                             </Text>
                         </LinearGradient>
                     </TouchableOpacity>
@@ -329,12 +293,10 @@ const SignInScreen = (props) => {
                     >
                         <Text style={[styles.textSign, {
                             color: color1
-                        }]}>Kayıt Ol</Text>
+                        }]}>
+                            {i18n.t('signUp')}
+                        </Text>
                     </TouchableOpacity>
-
-
-
-
                 </View>
             </Animatable.View>
         </View>

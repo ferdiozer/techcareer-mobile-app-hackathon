@@ -1,59 +1,42 @@
 import React, { useEffect, useState } from 'react';
 import { View, ImageBackground, Text, Dimensions, TouchableOpacity, FlatList, RefreshControl } from 'react-native';
-import CardStack, { Card } from 'react-native-card-stack-swiper';
-import CardItem from '../../components/CardItem';
-import styles from '../../assets/styles';
-import { NotifierRoot, Notifier, NotifierComponents } from 'react-native-notifier';
-import MyAnalytic from '../../MyAnalytic';
-import Loading from '../../components/Loading';
 
-import CardSwipe from '../../components/cards/CardSwipe'
+import styles from '../assets/styles';
+
+import Loading from '../components/Loading';
+
 
 import AntDesignIcon from 'react-native-vector-icons/AntDesign';
 
 
 import { connect } from 'react-redux';
 
-import { getMe, testHomeChange, testHomeChange1, } from '../../actions/home'
-import { saveDeviceDetails } from '../../actions/notification';
-import { getConversations } from '../../actions/conversation';
+import { getMe, testHomeChange, testHomeChange1, } from '../actions/home'
+import { saveDeviceDetails } from '../actions/notification';
+import { getConversations } from '../actions/conversation';
 
-import NotFoundModal from '../../components/NotFoundModal';
 
 import _ from 'lodash'
 import moment from 'moment'
-import ChatHeader from '../../components/ChatHeader';
-import TopBar from '../../components/TopBar';
-import BottomBar from '../../components/BottomBar';
-import i18n from '../../i18n';
-import EmptyInbox from '../../components/EmptyInbox';
-import UserAvatar from '../../components/UserAvatar';
-import { colors } from '../../constants';
-import Message from '../../components/Message';
+import i18n from '../i18n';
+import EmptyInbox from '../components/EmptyInbox';
+import UserAvatar from '../components/UserAvatar';
+import { colors } from '../constants';
+import Message from '../components/Message';
 
-const analytics = new MyAnalytic()
+
 
 const fullWidth = Dimensions.get('window').width;
 const fullHeight = Dimensions.get('window').height;
 
 const Home = (props) => {
 
-
+    
     const [pageLoading, setPageLoading] = useState(false)
     const [conversations, setConversations] = useState([])
     const [currentUser, setCurrentUser] = useState({})
 
     const loading = props.loading;
-
-
-    // const swiper = React.useRef(null)
-    //const notifierRef = React.useRef();
-
-    //  useEffect(() => {
-    //      if (_.get(props, "recs", []).length == 0) {
-    //          props.getRecs()
-    //      }
-    //  }, [recs])
 
     const meFromServer = async () => {
         try {
@@ -153,9 +136,11 @@ const Home = (props) => {
                                             {_.get(currentUser, "name")}
                                         </Text>
                                         <Text>
-                                            Son giriş : {moment(_.get(currentUser, "lastOnline", new Date())).format("DD.MM.YYYY HH.mm dddd")}
+                                          {i18n.t('lastLogin')} : {moment(_.get(currentUser, "lastOnline", new Date())).format("DD.MM.YYYY HH.mm dddd")}
                                         </Text>
-                                        <Text>
+                                        <Text style={{
+                                            color:'#3e3e3e'
+                                        }}>
                                             {moment(_.get(currentUser, "lastOnline", new Date())).fromNow()}
                                         </Text>
                                     </View>
@@ -215,7 +200,9 @@ const Home = (props) => {
                                             shadowRadius: 2.84,
                                             elevation: 2,
                                         }}>
-                                        <Text style={{ color: '#FFF' }}>Son Konuşmalar</Text>
+                                        <Text style={{ color: '#FFF' }}>
+                                            {i18n.t('lastConversations')}
+                                        </Text>
                                     </View>
                                     <FlatList
                                         // style={{ backgroundColor: 'red', height: 100 }}
@@ -232,14 +219,6 @@ const Home = (props) => {
                                                         flex: 1,
                                                         marginBottom: 10
                                                     }}
-                                                    // style={{
-                                                    //     justifyContent: "space-between",
-                                                    //     //  marginHorizontal: 10,
-                                                    //     paddingHorizontal: 10,
-                                                    //     backgroundColor: '#FFF',
-                                                    //     maxHeight: 120,
-                                                    //     borderRadius: 10,
-                                                    // }}
                                                     onPress={() => props.navigation.navigate("ChatScreen", { item })}>
                                                     <Message
                                                         // {...item}
@@ -265,7 +244,9 @@ const Home = (props) => {
                             </View>
 
                             :
-                            <EmptyInbox onPress={() => props.navigation.navigate("SearchUserScreen")} />
+                            <EmptyInbox 
+                            onPress={() => props.navigation.navigate("SearchUserScreen")} 
+                            />
                 }
 
             </View>

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import {
     View,
     Text,
@@ -11,16 +11,12 @@ import {
     ActivityIndicator
 } from 'react-native';
 import * as Animatable from 'react-native-animatable';
-import LinearGradient from 'react-native-linear-gradient';
-import FontAwesome from 'react-native-vector-icons/FontAwesome';
-import Feather from 'react-native-vector-icons/Feather';
-import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
-
 
 import _ from "lodash";
 
 
 import { colors } from '../constants';
+import i18n from '../i18n';
 
 const color1 = colors.primary;
 const color2 = colors.secondary;
@@ -68,7 +64,9 @@ export default ({
 
                         <TouchableHighlight
                             style={styles.closeButton} onPress={() => setModalVisible(false)}>
-                            <Text style={styles.textStyle}>Kapat</Text>
+                            <Text style={styles.textStyle}>
+                                {i18n.t('close')}
+                            </Text>
                         </TouchableHighlight>
                     </View>
                 </View>

@@ -510,12 +510,12 @@ const ChatScreen = (props) => {
                         msg={typing}
                         send={send}
                         setTyping={(e) => setTyping(e)}
-                        placeholder={"Mesajınızı buraya yazın.."} />
+                        placeholder={i18n.t('message.enterMessageHere')} />
             }
 
             <ActionSheet
                 ref={refActionSheet}
-                options={[...efectOptions, 'Kapat']}
+                options={[...efectOptions, i18n.t('close')]}
                 cancelButtonIndex={efectOptions.length}
                 //  styles={Platform.OS === 'android' ? styles : {}}
                 onPress={(index) => {

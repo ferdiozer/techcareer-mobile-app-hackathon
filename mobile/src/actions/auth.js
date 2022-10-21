@@ -49,10 +49,12 @@ export const doSignUp = (user) => async (dispatch) => {
 };
 
 export const doSignIn = (user) => async (dispatch) => {
-  console.log("!!!doSignIn::", doSignIn)
+  console.log("!!!doSignIn::", user)
+
   try {
     dispatch({ type: LOGIN });
     const url = API_ENDPOINTS.login
+
     const serverData = (await axios.post(url, user)).data
     const token = serverData._id
     dispatch({ type: LOGIN_SUCCESS, token, payload: { ...serverData.user, token: token } });

@@ -31,9 +31,8 @@ import { getAge, renderGender } from '../helpers';
 import { requestCameraPermission, requestPermissionsSTORAGE } from '../components/permission';
 
 import { launchCamera, launchImageLibrary } from 'react-native-image-picker';
-import SelectGender from '../components/SelectGender';
 import Loading from '../components/Loading';
-import { setLanguage } from '../i18n';
+import i18n, { setLanguage } from '../i18n';
 
 
 
@@ -100,10 +99,10 @@ const Profile = (props) => {
 
   const modalButtons = [
 
-    { title: "Düzenle", key: "editing" },
-    { title: "Galeriden fotoğraf yükle", key: "gallery" },
-    { title: "Kamerayı kullan", key: "camera" },
-    { title: "Çıkış Yap", key: "logout" },
+    { title:i18n.t('edit'), key: "editing" },
+    { title: i18n.t('loadFromGallery'), key: "gallery" },
+    { title: i18n.t('useCamera'), key: "camera" },
+    { title: i18n.t('logout') , key: "logout" },
   ]
 
 
@@ -146,11 +145,11 @@ const Profile = (props) => {
       console.log('ImagePicker Error: ', response.error);
     }
     else if (response.errorCode == 'camera_unavailable') {
-      alert('Kamera cihazda kullanılamıyor');
+      alert(i18n.t('message.camera_unavailable'));
       return;
     }
     else if (response.errorCode == 'permission') {
-      Alert.alert('Kamera izni gerekiyor!', "erişim izni verin");
+      Alert.alert(i18n.t('message.permission_title'),i18n.t('message.permission_desc'));
       return;
     }
     else {
@@ -168,13 +167,6 @@ const Profile = (props) => {
     }
   }
 
-  const onChangeGender = (key, val) => {
-    setData({
-      ...data,
-      [key]: val,
-    });
-  }
-
 
 
   const iconViewSize = WIDTH / 10
@@ -189,7 +181,7 @@ const Profile = (props) => {
       <GeneralModal
         modalVisible={modalVisible}
         setModalVisible={setModalVisible}
-        title="Diğer"
+        title={i18n.t('other')}
         buttons={modalButtons}
         onPressButton={onPressButton}
       />
@@ -242,14 +234,18 @@ const Profile = (props) => {
             ?
 
             <View style={styles.containerProfileEditItem}>
-              <Text>İsim</Text>
+              <Text>
+                {i18n.t('name')}
+              </Text>
               <TextInput
                 value={data.name ? data.name : user.name}
                 style={styles.textInput}
                 autoCapitalize="none"
                 onChangeText={(name) => setData({ ...data, name })}
               />
-              <Text>Hakkında</Text>
+              <Text>
+                {i18n.t('aboutUs')}
+              </Text>
               <View style={styles.textInput}>
                 <TextInput
                   underlineColorAndroid={"transparent"}
@@ -264,8 +260,8 @@ const Profile = (props) => {
 
               <View style={{ height: 30 }} />
 
-              <CustomButton onPress={() => doUpdateProfile()} title="Güncelle" />
-              <CustomButton onPress={() => setEditing(false)} title="İptal" color={colors.secondary} />
+              <CustomButton onPress={() => doUpdateProfile()} title={i18n.t('update')}/>
+              <CustomButton onPress={() => setEditing(false)} title={i18n.t('cancel')} color={colors.secondary} />
 
             </View>
             :
@@ -277,7 +273,7 @@ const Profile = (props) => {
                 age={moment(user.created).fromNow()}
                 //age={user.birth_date ? getAge(user.birth_date) : undefined}
                 gender={renderGender(user.gender)}
-                info1={"Türkiye"}
+              //  info1={"Türkiye"}
                 //   info2={info2}
                 info3={user.lastOnline ? moment(user.lastOnline).fromNow() : undefined}
               />
@@ -288,9 +284,8 @@ const Profile = (props) => {
         }
 
 
-        {
-          /*
-           <TouchableOpacity onPress={() => setLanguage("tr")}>
+ 
+           {/* <TouchableOpacity onPress={() => setLanguage("tr")}>
                         <Text>
                           Türkçe
                         </Text>
@@ -300,9 +295,8 @@ const Profile = (props) => {
                         <Text>
                           ENG
                         </Text>
-                      </TouchableOpacity>
-                      */
-        }
+                      </TouchableOpacity> */}
+
 
       </ScrollView>
     </ImageBackground>

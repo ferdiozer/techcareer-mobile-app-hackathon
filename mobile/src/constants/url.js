@@ -22,9 +22,9 @@ export const API_ENDPOINTS = {
     swipedLeft: `${API_URL}/home/swiped/left`,
     getMatches: `${API_URL}/users/me/matches`,
 
-    getConversationsOld: `${API_URL}/me/conversation`,
-    getUserProfile: `${API_URL}/users`,
-    createMessageOld: `${API_URL}/me/conversation/create-message`,
+
+
+  
 
     register: `${API_URL}/users`,
 

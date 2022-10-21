@@ -35,6 +35,8 @@ import { appinfo, colors } from '../constants';
 import ImageResizer from '../helpers/ImageResizer';
 import { uploadAvatarPhoto } from '../actions/fileServer';
 import { doSignUp, doSignIn } from '../actions/auth';
+import i18n from '../i18n';
+
 
 const color1 = colors.primary;
 const color2 = colors.secondary;
@@ -42,6 +44,8 @@ const color2 = colors.secondary;
 const { width: WIDTH, height: HEIGHT } = Dimensions.get('window');
 
 const SignInScreen = (props) => {
+
+
     const { navigation } = props
 
     const [data, setData] = React.useState({
@@ -85,27 +89,27 @@ const SignInScreen = (props) => {
         }
         //channel
         if (data.password != data.confirm_password) {
-            Alert.alert('Uyarı!', "Şifreler uyuşmuyor", [
-                { text: 'Tamam' }
+            Alert.alert(i18n.t('message.warning'), i18n.t('messages.passwordsNotMutch'), [
+                { text: i18n.t('message.okay') }
             ]);
             return;
         }
 
         if (!isEmail(data.email)) {
-            Alert.alert('Uyarı!', "Geçersiz E-Mail", [
-                { text: 'Tamam' }
+            Alert.alert(i18n.t('message.warning'), i18n.t('message.invalidEmail'), [
+                { text: i18n.t('message.okay') }
             ]);
             return;
         }
         if (data.password.length < 4) {
-            Alert.alert('Uyarı!', "Şifre 3 karakterden fazla olmalı", [
-                { text: 'Tamam' }
+            Alert.alert(i18n.t('message.warning'), i18n.t('message.passwordMore3'), [
+                { text: i18n.t('message.okay') }
             ]);
             return;
         }
         if (!data.name) {
-            Alert.alert('Uyarı!', "İsim zorunlu", [
-                { text: 'Tamam' }
+            Alert.alert(i18n.t('message.warning'), i18n.t('message.requiredName'), [
+                { text: i18n.t('message.okay') }
             ]);
             return;
         }
@@ -117,15 +121,15 @@ const SignInScreen = (props) => {
 
 
         props.doSignUp(sendData).then(result => {
-            Alert.alert(`Aramıza hoşgeldin ${_.get(props, "user.name", "")}`, "Şimdi Giriş Yapabilirsin", [
+            Alert.alert(`${i18n.t('message.youreWelcome')} ${_.get(props, "user.name", "")}`, i18n.t('message.willLoginAs'), [
                 {
-                    text: 'Tamam',
+                    text: i18n.t('message.okay'),
                     onPress: () => {
                         props.navigation.goBack()
                     }
                 },
                 {
-                    text: 'Otomatik Giriş',
+                    text: i18n.t('message.autoLogin'),
                     onPress: () => {
                         props.doSignIn({ email: data.email, password: data.password })
                     }
@@ -133,7 +137,7 @@ const SignInScreen = (props) => {
             ], { cancelable: false });
 
         }).catch(err => {
-
+            console.log("error :!!!!!!!!", err)
         })
     }
 
@@ -155,14 +159,12 @@ const SignInScreen = (props) => {
         };
         if (action == "gallery") {
             launchImageLibrary(options, (response) => {
-                console.log("launchImageLibrary", response)
                 if (response.didCancel) return
                 chooseFileAfter(response)
             })
         }
         else {
             launchCamera(options, (response) => {
-                console.log("launchCamera", response)
                 if (response.didCancel) return
                 chooseFileAfter(response)
             })
@@ -173,11 +175,11 @@ const SignInScreen = (props) => {
             console.log('ImagePicker Error: ', response.error);
         }
         else if (response.errorCode == 'camera_unavailable') {
-            alert('Kamera cihazda kullanılamıyor');
+            alert(i18n.t('message.camera_unavailable'));
             return;
         }
         else if (response.errorCode == 'permission') {
-            Alert.alert('Kamera izni gerekiyor!', "erişim izni verin");
+            Alert.alert(i18n.t('message.permission_title'), i18n.t('message.permission_desc'));
             return;
         }
         else {
@@ -194,22 +196,6 @@ const SignInScreen = (props) => {
         }
     }
 
-
-    const textInputChange = (val) => {
-        if (val.length !== 0) {
-            setData({
-                ...data,
-                username: val,
-                check_textInputChange: true
-            });
-        } else {
-            setData({
-                ...data,
-                username: val,
-                check_textInputChange: false
-            });
-        }
-    }
 
     const handlePasswordChange = (val) => {
         setData({
@@ -248,7 +234,9 @@ const SignInScreen = (props) => {
                 loading && <Loading transparant={false} />
             }
             <View style={styles.header}>
-                <Text style={styles.text_header}>Şimdi Kayıt Ol!</Text>
+                <Text style={styles.text_header}>
+                    {i18n.t('message.signUpNow')}
+                </Text>
 
             </View>
             <TouchableOpacity style={styles.circleParentView}
@@ -286,7 +274,9 @@ const SignInScreen = (props) => {
                 <ScrollView>
                     <Text style={[styles.text_footer, {
                         marginTop: 35
-                    }]}>İsim</Text>
+                    }]}>
+                        {i18n.t('message.name')}
+                    </Text>
                     <View style={styles.action}>
                         <FontAwesome
                             name="user-o"
@@ -294,7 +284,7 @@ const SignInScreen = (props) => {
                             size={20}
                         />
                         <TextInput
-                            placeholder="Adını buraya girebilirsin"
+                            placeholder={i18n.t('message.enterNameHere')}
                             style={styles.textInput}
                             autoCapitalize="none"
                             onChangeText={(val) => onChange("name", val)}
@@ -315,7 +305,9 @@ const SignInScreen = (props) => {
 
                     <Text style={[styles.text_footer, {
                         marginTop: 35
-                    }]}>E-Posta</Text>
+                    }]}>
+                        {i18n.t('message.email')}
+                    </Text>
                     <View style={styles.action}>
                         <FontAwesome
                             name="envelope-o"
@@ -324,7 +316,7 @@ const SignInScreen = (props) => {
                         />
                         <TextInput
                             keyboardType='email-address'
-                            placeholder="E-Posta adresin"
+                            placeholder={i18n.t('message.yourEmailAddress')}
                             style={styles.textInput}
                             autoCapitalize="none"
                             onChangeText={(val) => onChange("email", val)}
@@ -346,7 +338,9 @@ const SignInScreen = (props) => {
 
                     <Text style={[styles.text_footer, {
                         marginTop: 35
-                    }]}>Şifre</Text>
+                    }]}>
+                        {i18n.t('message.password')}
+                    </Text>
                     <View style={styles.action}>
                         <Feather
                             name="lock"
@@ -354,7 +348,7 @@ const SignInScreen = (props) => {
                             size={20}
                         />
                         <TextInput
-                            placeholder="Şifren"
+                            placeholder={i18n.t('message.password')}
                             secureTextEntry={data.secureTextEntry ? true : false}
                             style={styles.textInput}
                             autoCapitalize="none"
@@ -383,7 +377,9 @@ const SignInScreen = (props) => {
 
                     <Text style={[styles.text_footer, {
                         marginTop: 35
-                    }]}>Şifre Tekrarı</Text>
+                    }]}>
+                        {i18n.t('message.repeatPassword')}
+                    </Text>
                     <View style={styles.action}>
                         <Feather
                             name="lock"
@@ -391,7 +387,7 @@ const SignInScreen = (props) => {
                             size={20}
                         />
                         <TextInput
-                            placeholder="Şifreni tekrar gir"
+                            placeholder={i18n.t('message.repeatPasswordEnter')}
                             secureTextEntry={data.confirm_secureTextEntry ? true : false}
                             style={styles.textInput}
                             autoCapitalize="none"
@@ -422,12 +418,12 @@ const SignInScreen = (props) => {
 
                     <View style={styles.textPrivate}>
                         <Text style={styles.color_textPrivate}>
-                            Kaydolarak
+                        {i18n.t('message.prv1')}
                         </Text>
-                        <Text style={[styles.color_textPrivate, { fontWeight: 'bold' }]}>{" "}Hizmet Koşulları</Text>
-                        <Text style={styles.color_textPrivate}>{" "}ve</Text>
-                        <Text style={[styles.color_textPrivate, { fontWeight: 'bold' }]}>{" "}Gizlilik Politikamızı</Text>
-                        <Text style={styles.color_textPrivate}>{" "}kabul etmiş olursunuz</Text>
+                        <Text style={[styles.color_textPrivate, { fontWeight: 'bold' }]}>{" "}{i18n.t('message.prv2')}</Text>
+                        <Text style={styles.color_textPrivate}>{" "}{i18n.t('message.prv3')}</Text>
+                        <Text style={[styles.color_textPrivate, { fontWeight: 'bold' }]}>{" "}{i18n.t('message.prv4')}</Text>
+                        <Text style={styles.color_textPrivate}>{" "}{i18n.t('message.prv5')}</Text>
                     </View>
                     <View style={styles.button}>
                         <TouchableOpacity
@@ -440,7 +436,9 @@ const SignInScreen = (props) => {
                             >
                                 <Text style={[styles.textSign, {
                                     color: '#fff'
-                                }]}>Kayıt Ol</Text>
+                                }]}>
+                                    {i18n.t('signUp')}
+                                </Text>
                             </LinearGradient>
                         </TouchableOpacity>
 
@@ -454,7 +452,9 @@ const SignInScreen = (props) => {
                         >
                             <Text style={[styles.textSign, {
                                 color: color1
-                            }]}>Griş Yap</Text>
+                            }]}>
+                                   {i18n.t('login')}
+                            </Text>
                         </TouchableOpacity>
                     </View>
                 </ScrollView>
@@ -468,18 +468,22 @@ const SignInScreen = (props) => {
             >
                 <View style={styles.centeredView}>
                     <View style={styles.modalView}>
-                        <Text style={styles.modalText}>Profil fotoğrafı yükle</Text>
+                        <Text style={styles.modalText}>  {i18n.t('message.loadProfilePhoto')}</Text>
 
                         <TouchableOpacity
                             style={{ ...styles.openButton, marginBottom: 10 }}
                             onPress={() => onPressCamera("camera")}>
-                            <Text style={styles.textStyle}>Kamerayı kullan</Text>
+                            <Text style={styles.textStyle}>
+                            {i18n.t('useCamera')}
+                            </Text>
                         </TouchableOpacity>
 
                         <TouchableOpacity
                             style={{ ...styles.openButton, marginBottom: 10 }}
                             onPress={() => onPressCamera("gallery")}>
-                            <Text style={styles.textStyle}>Galeriden yükle</Text>
+                            <Text style={styles.textStyle}>
+                            {i18n.t('loadFromGallery')}
+                            </Text>
                         </TouchableOpacity>
 
                         <TouchableHighlight
@@ -488,7 +492,9 @@ const SignInScreen = (props) => {
                                 setModalVisible(false);
                             }}
                         >
-                            <Text style={styles.textStyle}>Kapat</Text>
+                            <Text style={styles.textStyle}>
+                            {i18n.t('close')}
+                            </Text>
                         </TouchableHighlight>
                     </View>
                 </View>

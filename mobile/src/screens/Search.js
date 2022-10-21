@@ -1,40 +1,28 @@
 import React, { useEffect, useState } from 'react';
-import { View, ImageBackground, Text, TextInput, FlatList, TouchableOpacity, Image } from 'react-native';
-import CardStack, { Card } from 'react-native-card-stack-swiper';
-import CardItem from '../../components/CardItem';
-import styles from '../../assets/styles';
-import { NotifierRoot, Notifier, NotifierComponents } from 'react-native-notifier';
-import MyAnalytic from '../../MyAnalytic';
-import Loading from '../../components/Loading';
+import { View,Text, TextInput, FlatList, TouchableOpacity } from 'react-native';
 
-import CardSwipe from '../../components/cards/CardSwipe'
+import styles from '../assets/styles';
+
+import Loading from '../components/Loading';
 
 
 import { connect } from 'react-redux';
 
-import { searchUser, testHomeChange1, getHomeRecs, swipedRight, swipedLeft } from '../../actions/home'
-import { saveDeviceDetails } from '../../actions/notification';
-
-import NotFoundModal from '../../components/NotFoundModal';
+import { searchUser } from '../actions/home'
 
 import _ from 'lodash'
-import ChatHeader from '../../components/ChatHeader';
-import Header from '../../components/Header';
-import TopBar from '../../components/TopBar';
-import BottomBar from '../../components/BottomBar';
-import i18n from '../../i18n';
-import EmptyInbox from '../../components/EmptyInbox';
-import { colors, defaultImages } from '../../constants';
 
-import FontAwesome from 'react-native-vector-icons/FontAwesome';
-import UserAvatar from '../../components/UserAvatar';
+import Header from '../components/Header';
+
+import { colors } from '../constants';
+
+import UserAvatar from '../components/UserAvatar';
+import i18n from '../i18n';
 
 
 
 
 
-
-const analytics = new MyAnalytic()
 
 const Search = (props) => {
 
@@ -67,24 +55,11 @@ const Search = (props) => {
 
 
 
-
-    const ItemSeparatorView = () => {
-        return (
-            // Flat List Item Separator
-            <View
-                style={{
-                    height: 0.5,
-                    width: '100%',
-                    backgroundColor: '#C8C8C8',
-                }}
-            />
-        );
-    };
-
-
     return (
         <View style={styles.bg}>
-            <Header goback={() => props.navigation.goBack()} title="Ara" />
+            <Header goback={() => props.navigation.goBack()}
+             title={i18n.t('search')}
+             />
             {pageLoading && <Loading />}
 
 
@@ -113,7 +88,7 @@ const Search = (props) => {
                         if (text) servicesOp(text)
 
                     }}
-                    placeholder="Anahtar kelimeyi buraya girin.."
+                    placeholder={i18n.t('searchPlaceholder')}
                     style={{ backgroundColor: '#fff', paddingHorizontal: 20 }}
                 />
             </View>
@@ -125,10 +100,6 @@ const Search = (props) => {
                 renderItem={({ item, index }) => (
                     <TouchableOpacity
                         onPress={() => props.navigation.navigate("ChatScreen", { item: { user: item } })}
-                        //  onPress={() => {
-                        //      // navigation.navigate('PublicProfile', { item })
-                        //      console.log(item)
-                        //  }}
                         key={index}
                         //style={styles.listItem}
                         style={{

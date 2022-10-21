@@ -12,7 +12,7 @@ import { createStackNavigator } from '@react-navigation/stack';
 import { StatusBar, View } from 'react-native';
 import MainTabScreen from "./MainTabScreen";
 import ChatScreen from "./screens/Chat";
-import SearchUserScreen from "./screens/users/Search";
+import SearchUserScreen from "./screens/Search";
 
 import { AuthContext } from './context/AuthContext';
 

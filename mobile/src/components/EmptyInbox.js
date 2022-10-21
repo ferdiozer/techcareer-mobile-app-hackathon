@@ -9,11 +9,10 @@ import Entypo from 'react-native-vector-icons/Entypo';
 
 import { colors } from '../constants'
 import i18n from '../i18n';
-import { color } from 'react-native-reanimated';
+
 
 const EmptyInbox = ({
     onPress,
-    variant,
     bottom,
     width
 }) => {
@@ -44,11 +43,10 @@ const EmptyInbox = ({
         }}>
 
             <Text style={{ color: colors.danger, fontSize: 18 }}>
-                {i18n.t("message.not_found")}
+                {i18n.t('message.not_found')}
             </Text>
 
             <View style={{
-                //	flexDirection: "row",
                 alignItems: "center",
                 paddingVertical: 30
             }}>
@@ -66,7 +64,7 @@ const EmptyInbox = ({
                 >
                     <Text style={styles.dislike}>
                         <Entypo name="new-message" size={iconSize} />
-                        {i18n.t("message.new_message")}
+                        {i18n.t('message.new_message')}
 
                     </Text>
                 </TouchableOpacity>

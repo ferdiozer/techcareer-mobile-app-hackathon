@@ -12,9 +12,7 @@ target 'mobile' do
     :hermes_enabled => false
   )
 
-  pod 'RNFS', :path => '../node_modules/react-native-fs'
 
-  pod 'RNAudio', :path => '../node_modules/react-native-audio'
 
   target 'mobileTests' do
     inherit! :complete

@@ -2,34 +2,18 @@
 import React from "react";
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 
-//import HomeScreen from "./screens/Home";
-import HomeScreen from "./screens/home/index";
+import HomeScreen from "./screens/Home";
 import ConversationScreen from "./screens/Conversation";
 import ProfileScreen from "./screens/Profile";
 
 import AntDesign from 'react-native-vector-icons/AntDesign';
-import Fontisto from 'react-native-vector-icons/Fontisto';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-
-import { TouchableOpacity, View } from "react-native"
+import i18n from './i18n';
 import { colors } from "./constants";
 
 
 const Tab = createBottomTabNavigator();
 
-// const renderTabBarOptions=()=>{
-//     return{
-//         tabBarLabel: 'Anasayfa',
-//         tabBarColor: '#009387',
-//         tabBarIcon: ({ color }) => (
-//           <TouchableOpacity onPress={() => navigation.navigate('Home')}>
-//             <AntDesign name="home" color={color} size={26} />
-//           </TouchableOpacity>
-//         ),
-//       }
-// }
-
-// '#e91e63'
 const MainTabScreen = ({ navigation }) => (
     <Tab.Navigator
         initialRouteName="Home"
@@ -42,7 +26,7 @@ const MainTabScreen = ({ navigation }) => (
             name="Home"
             component={HomeScreen}
             options={{
-                tabBarLabel: 'Keşfet',
+                tabBarLabel: i18n.t('tab.discover'),
                 tabBarIcon: ({ color, focused, size }) => (
                     <AntDesign name="home" color={color} size={size} />),
             }}
@@ -51,7 +35,7 @@ const MainTabScreen = ({ navigation }) => (
             name="Conversation"
             component={ConversationScreen}
             options={{
-                tabBarLabel: 'Chat',
+                tabBarLabel: i18n.t('tab.chat'),
                 tabBarIcon: ({ color, focused, size }) => (
                     <Ionicons name="ios-chatbubble-ellipses-outline" color={color} size={size} />
                 ),
@@ -61,7 +45,7 @@ const MainTabScreen = ({ navigation }) => (
             name="Profile"
             component={ProfileScreen}
             options={{
-                tabBarLabel: 'Profil',
+                tabBarLabel: i18n.t('tab.profile'),
                 tabBarIcon: ({ color, focused, size }) => (
                     <AntDesign name="user" color={color} size={size} />
                 ),
